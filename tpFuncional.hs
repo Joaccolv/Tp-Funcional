@@ -36,3 +36,5 @@ Nota: sólo se puede hacer la función estadística y usar la misma en forma de 
 
 -- esto es una prueba 
 -- probando ando
+
+--toma pa vo mati
