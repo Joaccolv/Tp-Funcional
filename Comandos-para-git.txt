@@ -9,6 +9,9 @@
 !!Hacer un push!!
 --git push origin master [Envia los cambios realizados en el repositorio local al repositorio ubicado en github]
 
+!!Hacer un pull!!
+--git pull origin master [Descarga el repositorio de github a tu repositorio local]
+
 --git log [Te deja ver el historial de commits realizados]
 
 !!Vincular con github!!
