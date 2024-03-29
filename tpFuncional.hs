@@ -37,4 +37,36 @@ Nota: sólo se puede hacer la función estadística y usar la misma en forma de 
 -- esto es una prueba 
 -- probando ando
 
---toma pa vo mati
+data Viajero = Viajero {nombre::String , edad::Int, recuerdos::[Recuerdos], viajes::[Viaje]} deriving Show
+
+data Viaje = Viaje { tipoViaje:: TipoViaje, lugar::String, transformaciones::[String], recuerdo::[Recuerdos], 
+                        aniosLuz::Int, anioAlQViajan::Int } deriving Show
+
+data Recuerdos = Recuerdos {nombreDelRecuerdo ::  String, lugarOrigen:: String} deriving Show
+
+data TipoViaje = Pasado | Futuro deriving (Eq, Show)
+
+
+viajeroEjemplo :: Viajero 
+viajeroEjemplo = Viajero "Estefania" 20 [Recuerdos "Recuerdo1" "Lugar1", Recuerdos "Recuerdo2" "Lugar2"] [viaje1, viaje2]
+  where
+    viaje1 = Viaje Pasado "Travesia1" [] [] 0 0
+    viaje2 = Viaje Pasado "Travesia2" [] [] 0 0
+
+
+--1a
+nombreViajero :: Viajero -> String
+nombreViajero (Viajero nombre _ _ _) = nombre 
+-- la llamo como nombreViajero viajeroEjemplo
+
+--1b
+nombreViaje :: Viaje -> String
+nombreViaje = lugar
+
+--1c
+obtenerRecuerdo :: Recuerdos -> (String, String)
+obtenerRecuerdo (Recuerdos nombreDelRecuerdo lugarOrigen) = (nombreDelRecuerdo, lugarOrigen)
+
+--2
+recuerdosYlugares :: Viajero -> ([Recuerdos], [Viaje])
+recuerdosYlugares (Viajero _ _ recuerdos viajes) = (recuerdos, viajes) 
