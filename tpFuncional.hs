@@ -47,6 +47,9 @@ data Recuerdos = Recuerdos {nombreDelRecuerdo ::  String, lugarOrigen:: String} 
 data TipoViaje = Pasado | Futuro deriving (Eq, Show)
 
 
+--transformaciones= perder recuerdos, aumentar 10 años, disminuir 10 años, ver el futuro
+
+
 viajeroEjemplo :: Viajero 
 viajeroEjemplo = Viajero "Estefania" 20 [Recuerdos "Recuerdo1" "Lugar1", Recuerdos "Recuerdo2" "Lugar2"] [viaje1, viaje2]
   where
@@ -70,3 +73,11 @@ obtenerRecuerdo (Recuerdos nombreDelRecuerdo lugarOrigen) = (nombreDelRecuerdo, 
 --2
 recuerdosYlugares :: Viajero -> ([Recuerdos], [Viaje])
 recuerdosYlugares (Viajero _ _ recuerdos viajes) = (recuerdos, viajes) 
+
+--4
+
+EsViajeInteresante (Viaje destino tipo transformaciones _ _)
+                    | destino == "Lejano Oeste" = True
+                    | tipoViaje == Pasado && length transformaciones > 5 = True
+                    | tipoViaje == Futuro = True
+                    | otherwise = false
