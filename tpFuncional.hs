@@ -74,8 +74,9 @@ obtenerRecuerdo (Recuerdos nombreDelRecuerdo lugarOrigen) = (nombreDelRecuerdo, 
 recuerdosYlugares :: Viajero -> ([Recuerdos], [Viaje])
 recuerdosYlugares (Viajero _ _ recuerdos viajes) = (recuerdos, viajes) 
 
---4
+--3
 
+esViajeInteresante :: String -> String -> [a] -> Bool
 EsViajeInteresante (Viaje destino tipo transformaciones _ _)
                     | destino == "Lejano Oeste" = True
                     | tipoViaje == Pasado && length transformaciones > 5 = True
