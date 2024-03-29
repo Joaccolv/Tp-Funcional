@@ -11,3 +11,5 @@
 !!Vincular con github!!
 --git config --global user.email "Pones tu email"
 --git config --global user.name "Nombre"
+
+git clone "url" [clonar un repositorio de git]
