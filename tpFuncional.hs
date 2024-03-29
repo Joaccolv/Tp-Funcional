@@ -35,3 +35,4 @@ Se pide:
 Nota: sólo se puede hacer la función estadística y usar la misma en forma de consulta en los puntos a, b y c. No se pueden usar funciones-}
 
 -- esto es una prueba 
+-- probando ando
