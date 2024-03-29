@@ -1,4 +1,4 @@
-{-Desde tiempos inmemoriales los viajes en el tiempo han seducido a muchas personas.
+{-/Desde tiempos inmemoriales los viajes en el tiempo han seducido a muchas personas.
 ¡Hoy los vamos a programar!
 Como cualquier viaje, tenemos a la persona que lo realiza y de ella se conoce:
     *su nombre,
