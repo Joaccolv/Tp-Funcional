@@ -76,9 +76,9 @@ recuerdosYlugares (Viajero _ _ recuerdos viajes) = (recuerdos, viajes)
 
 --3
 
-esViajeInteresante :: String -> String -> [a] -> Bool
-EsViajeInteresante (Viaje destino tipo transformaciones _ _)
-                    | destino == "Lejano Oeste" = True
-                    | tipoViaje == Pasado && length transformaciones > 5 = True
-                    | tipoViaje == Futuro = True
-                    | otherwise = false
+esViajeInteresante :: Viaje -> Bool
+esViajeInteresante (Viaje tipoViaje lugar transformaciones _ _ _ )
+                | lugar == "Lejano Oeste" = True
+                | tipoViaje == Pasado && length transformaciones > 5 = True
+                | tipoViaje == Futuro = True
+                | otherwise = False
