@@ -33,3 +33,5 @@ Se pide:
     b. Dada una lista de viajes, obtener la suma de todos los años luz que suman
     c. Dada una lista, obtener los nombres de todos los viajes. Tener en cuenta que los viajes al pasado no suman años luz.
 Nota: sólo se puede hacer la función estadística y usar la misma en forma de consulta en los puntos a, b y c. No se pueden usar funciones-}
+
+-- esto es una prueba 
