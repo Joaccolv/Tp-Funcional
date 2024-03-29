@@ -1,0 +1,5 @@
+--git init [Inicializa un nuevo repositorio de git]
+--git status [muestra por consola los archivos que todavia no subiste al repositorio]
+--Vincular con github--
+--git config --global user.email "Pones tu email"
+--git config --global user.name "Nombre"
