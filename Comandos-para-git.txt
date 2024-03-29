@@ -7,7 +7,7 @@
 --git commit -m "Mensaje"[Mensaje corto para explicar que cambios hiciste en el repositorio]
 
 !!Hacer un push!!
-git push origin master [Envia los cambios realizados en el repositorio local al repositorio ubicado en github]
+--git push origin master [Envia los cambios realizados en el repositorio local al repositorio ubicado en github]
 
 --git log [Te deja ver el historial de commits realizados]
 
