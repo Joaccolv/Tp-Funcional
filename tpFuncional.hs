@@ -91,3 +91,17 @@ nombresYAñosViajesInteresantes viajes = [(nombreViaje viaje, anioAlQViajan viaj
 viajesEntreAños :: [Viaje] -> Int -> Int -> [(String, Int)]
 viajesEntreAños viajes añoInicio añoFin = [(nombreViaje viaje, anioAlQViajan viaje) | viaje <- viajes, añoInicio <= anioAlQViajan viaje, anioAlQViajan viaje <= añoFin]
 
+--7a
+viajeCTransformaciones :: [Viaje] -> [string]
+viajeCTransformaciones viajes = [(lugar viaje, transformaciones viaje) | viaje <- viajes]  
+                            | length tranformaciones > 3 = concat lugar viajeCTranformaciones xs
+                            | otherwise = viajeCTransformaciones xs
+
+--7b
+sumaAniosLuz :: [Viaje] -> int
+sumaAniosLuz viajes = [(aniosLuz viaje) | viaje <- viajes, ] = aniosLuz + sumaAniosLuz xs
+
+--7c
+obtenerNombreViajes :: [Viaje] -> [string]
+obtenerNombreViajes [] = []
+obtenerNombreViajes (x:xs) = x (Viaje _ lugar _ _ _ _) = concat lugar obtenerNombreViajes xs
