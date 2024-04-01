@@ -1,4 +1,4 @@
-{-/Desde tiempos inmemoriales los viajes en el tiempo han seducido a muchas personas.
+{-\Desde tiempos inmemoriales los viajes en el tiempo han seducido a muchas personas.
 ¡Hoy los vamos a programar!
 Como cualquier viaje, tenemos a la persona que lo realiza y de ella se conoce:
     *su nombre,
@@ -50,11 +50,11 @@ data TipoViaje = Pasado | Futuro deriving (Eq, Show)
 --transformaciones= perder recuerdos, aumentar 10 años, disminuir 10 años, ver el futuro
 
 
-viajeroEjemplo :: Viajero 
-viajeroEjemplo = Viajero "Estefania" 20 [Recuerdos "Recuerdo1" "Lugar1", Recuerdos "Recuerdo2" "Lugar2"] [viaje1, viaje2]
-  where
-    viaje1 = Viaje Pasado "Travesia1" [] [] 0 0
-    viaje2 = Viaje Pasado "Travesia2" [] [] 0 0
+--viajeroEjemplo :: Viajero 
+--viajeroEjemplo = Viajero "Estefania" 20 [Recuerdos "Recuerdo1" "Lugar1", Recuerdos "Recuerdo2" "Lugar2"] [viaje1, viaje2]
+ -- where
+    --viaje1 = Viaje Pasado "Travesia1" [] [] 0 0
+   -- viaje2 = Viaje Pasado "Travesia2" [] [] 0 0
 
 
 --1a
@@ -75,10 +75,19 @@ recuerdosYlugares :: Viajero -> ([Recuerdos], [Viaje])
 recuerdosYlugares (Viajero _ _ recuerdos viajes) = (recuerdos, viajes) 
 
 --3
-
 esViajeInteresante :: Viaje -> Bool
 esViajeInteresante (Viaje tipoViaje lugar transformaciones _ _ _ )
                 | lugar == "Lejano Oeste" = True
                 | tipoViaje == Pasado && length transformaciones > 5 = True
                 | tipoViaje == Futuro = True
                 | otherwise = False
+
+--4
+viajesInteresantes = filter esViajeInteresante
+nombresYAñosViajesInteresantes :: [Viaje] -> [(String, Int)]
+nombresYAñosViajesInteresantes viajes = [(nombreViaje viaje, anioAlQViajan viaje) | viaje <- viajes]
+
+--5
+viajesEntreAños :: [Viaje] -> Int -> Int -> [(String, Int)]
+viajesEntreAños viajes añoInicio añoFin = [(nombreViaje viaje, anioAlQViajan viaje) | viaje <- viajes, añoInicio <= anioAlQViajan viaje, anioAlQViajan viaje <= añoFin]
+
