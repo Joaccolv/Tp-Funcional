@@ -47,7 +47,7 @@ data Recuerdos = Recuerdos {nombreDelRecuerdo ::  String, lugarOrigen:: String} 
 data TipoViaje = Pasado | Futuro deriving (Eq, Show)
 
 
---transformaciones= perder recuerdos, aumentar 10 años, disminuir 10 años, ver el futuro
+--transformaciones= perder recuerdos que comienzan con vocalss, aumentar 10 años, disminuir 5 años
 
 
 --viajeroEjemplo :: Viajero 
