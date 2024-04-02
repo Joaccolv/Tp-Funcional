@@ -91,6 +91,8 @@ nombresYAñosViajesInteresantes viajes = [(nombreViaje viaje, anioAlQViajan viaj
 viajesEntreAños :: [Viaje] -> Int -> Int -> [(String, Int)]
 viajesEntreAños viajes añoInicio añoFin = [(nombreViaje viaje, anioAlQViajan viaje) | viaje <- viajes, añoInicio <= anioAlQViajan viaje, anioAlQViajan viaje <= añoFin]
 
+--6
+
 --7a
 viajeCTransformaciones :: [Viaje] -> [string]
 viajeCTransformaciones viajes = [(lugar viaje, transformaciones viaje) | viaje <- viajes]  
