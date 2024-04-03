@@ -123,4 +123,8 @@ sumaAniosLuz = funcionEstadistica (\_ -> True) (sum . map aniosLuz)
 
 --7c
 nombresDeViajes :: [Viaje] -> [String]
+<<<<<<< HEAD
 nombresDeViajes = funcionEstadistica (\_ -> True) (map lugar)
+=======
+nombresDeViajes = funcionEstadistica (\_ -> True) (map lugar)
+>>>>>>> 3ffc8932c854859e750d9303517ed24a6a292816
