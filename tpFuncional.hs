@@ -92,17 +92,21 @@ viajesEntreAños :: [Viaje] -> Int -> Int -> [(String, Int)]
 viajesEntreAños viajes añoInicio añoFin = [(nombreViaje viaje, anioAlQViajan viaje) | viaje <- viajes, añoInicio <= anioAlQViajan viaje, anioAlQViajan viaje <= añoFin]
 
 --6
-listaViajes :: (a -> b) -> [a] -> [b]
-listaViajes viajes = map transformaciones viajes 
+listaViajes :: [a1] -> [(a2, a1 -> String, c, a1 -> p, e, f)     -> [Recuerdos] -> [Recuerdos]]
+listaViajes viajes = map transformacionesV viajes
 
-transoformaciones viaje (_, lugar, _, recuerdo, anioLuz, anioAlQViajan) |lugar viaje == "lejano oeste" = filtrarRecuerdosVocal (recuerdo viaje)
-                                                                        |otherwise = "No hay ninguna transformacion aplicable a esta lista" 
+obtenerNRecuerdo :: Viaje -> [Recuerdos]
+obtenerNRecuerdo (Viaje _ _ _ recuerdo _ _) =recuerdo
 
-filtrarRecuerdosVocal :: (a -> Bool) -> [a] -> [a]
-filtrarRecuerdosVocal recuerdo= filter (\recuerdo -> not (comienzaVocal (head.recuerdo)))
+
+transformacionesV :: t -> (a, t -> String, c, t -> p, e, f) -> [Recuerdos] -> [Recuerdos]
+transformacionesV viaje (_, lugar, _, recuerdo, anioLuz, anioAlQViajan)  |lugar viaje == "lejano oeste" = filtrarRecuerdosVocal (recuerdo viaje)
+
+filtrarRecuerdosVocal :: p -> [Recuerdos] -> [Recuerdos]
+filtrarRecuerdosVocal recuerdo= filter (\recuerdo -> not (comienzaVocal (nombreDelRecuerdo recuerdo)))
 
 comienzaVocal :: String -> Bool
-comienzaVocal(x:xs) = x 'elem' "aeiou"
+comienzaVocal (x:_) = x `elem` "aeiou"
 
 --7
 -- Función estadística
