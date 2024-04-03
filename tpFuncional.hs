@@ -109,7 +109,7 @@ comienzaVocal :: String -> Bool
 comienzaVocal (x:_) = x `elem` "aeiou"
 
 -- Función estadística
-funcionEstadistica :: (a -> Bool) -> ([b] -> c) -> [a] -> c
+funcionEstadistica :: (a -> Bool) -> ([a] -> b) -> [a] -> b
 funcionEstadistica condicion transformacion elementos = transformacion (filter condicion elementos)
 
 -- 7a
