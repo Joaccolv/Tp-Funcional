@@ -108,19 +108,18 @@ filtrarRecuerdosVocal recuerdo= filter (\recuerdo -> not (comienzaVocal (nombreD
 comienzaVocal :: String -> Bool
 comienzaVocal (x:_) = x `elem` "aeiou"
 
---7
 -- Función estadística
 funcionEstadistica :: (a -> Bool) -> ([b] -> c) -> [a] -> c
-funcionEstadistica condicion transformacion elementos = transformacion [x | x <- elementos, condicion x]
+funcionEstadistica condicion transformacion elementos = transformacion (filter condicion elementos)
 
---7a
+-- 7a
 viajesCMTresTransformaciones :: [Viaje] -> [String]
 viajesCMTresTransformaciones = funcionEstadistica (\viaje -> length (transformaciones viaje) > 3) (map lugar)
 
---7b
+-- 7b
 sumaAniosLuz :: [Viaje] -> Int
 sumaAniosLuz = funcionEstadistica (\_ -> True) (sum . map aniosLuz)
 
---7c
+-- 7c
 nombresDeViajes :: [Viaje] -> [String]
 nombresDeViajes = funcionEstadistica (\_ -> True) (map lugar)
