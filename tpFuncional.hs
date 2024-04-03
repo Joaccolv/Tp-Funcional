@@ -92,23 +92,47 @@ viajesEntreAños :: [Viaje] -> Int -> Int -> [(String, Int)]
 viajesEntreAños viajes añoInicio añoFin = [(nombreViaje viaje, anioAlQViajan viaje) | viaje <- viajes, añoInicio <= anioAlQViajan viaje, anioAlQViajan viaje <= añoFin]
 
 --6
-listaViajes :: [a1] -> [(a2, a1 -> String, c, a1 -> p, e, f)     -> [Recuerdos] -> [Recuerdos]]
-listaViajes viajes = map transformacionesV viajes
 
-obtenerNRecuerdo :: Viaje -> [Recuerdos]
-obtenerNRecuerdo (Viaje _ _ _ recuerdo _ _) =recuerdo
+listaRecuerdosViajeroTransformado :: Viajero -> [Recuerdos]
+listaRecuerdosViajeroTransformado viajero = (obtenerRecuerdosViajero.viajeroTransformado) viajero
+
+{------------|Sub funciones|------------}
+viajeroTransformado :: Viajero -> Viajero
+viajeroTransformado viajero = aplicarTransformaciones (listaTransformaciones viajero) viajero
+
+obtenerRecuerdosViajero :: Viajero -> [Recuerdos]
+
+obtenerRecuerdosViajero (Viajero _ _ recuerdos _) = recuerdos
+
+aplicarTransformaciones :: [String] -> Viajero -> Viajero
+aplicarTransformaciones [] viajero = viajero
+aplicarTransformaciones _ (Viajero _ _ [] _) = error []
+aplicarTransformaciones (x:xs) viajero@(Viajero nombre edad recuerdos viajes)
+    | x == "lejano oeste" = Viajero nombre edad (filtrarRecuerdosVocal recuerdos) viajes
+    | x == "futuro" = Viajero nombre (edad + 10) recuerdos viajes
+    | otherwise = aplicarTransformaciones xs viajero
 
 
-transformacionesV :: t -> (a, t -> String, c, t -> p, e, f) -> [Recuerdos] -> [Recuerdos]
-transformacionesV viaje (_, lugar, _, recuerdo, anioLuz, anioAlQViajan)  |lugar viaje == "lejano oeste" = filtrarRecuerdosVocal (recuerdo viaje)
+listaTransformaciones :: Viajero -> [String]
+listaTransformaciones viajero = obtenerTransformaciones (viajero)
 
-filtrarRecuerdosVocal :: p -> [Recuerdos] -> [Recuerdos]
-filtrarRecuerdosVocal recuerdo= filter (\recuerdo -> not (comienzaVocal (nombreDelRecuerdo recuerdo)))
+filtrarRecuerdosVocal :: [Recuerdos] -> [Recuerdos]
+filtrarRecuerdosVocal recuerdos = filter (\(Recuerdos nombre _) -> not(comienzaVocal nombre)) recuerdos
 
 comienzaVocal :: String -> Bool
-comienzaVocal (x:_) = x `elem` "aeiou"
+comienzaVocal (x:_) = x `elem` "aeiouAEIOU"
 
--- Función estadística
+
+obtenerRecuerdosDeViajes :: Viajero -> [Recuerdos]
+obtenerRecuerdosDeViajes (Viajero _ _ recuerdos viajes) = foldr (\viaje recuerdos -> recuerdo viaje ++ recuerdos) [] viajes -- deberia devolver una lista de listas con {nombreDelRecuerdo, lugarOrigen}
+-- es como si le pasara x e y, pero y es una lista y voy concatenandole recuerdos 
+
+obtenerTransformaciones :: Viajero -> [String]
+obtenerTransformaciones (Viajero _ _ _ viajes) = foldr (\viaje acumulador -> transformaciones viaje ++ acumulador) [] viajes
+{-------------------------------------}
+
+
+-- 7 Función estadística
 funcionEstadistica :: (a -> Bool) -> ([a] -> b) -> [a] -> b
 funcionEstadistica condicion transformacion elementos = transformacion (filter condicion elementos)
 
@@ -122,8 +146,4 @@ sumaAniosLuz = funcionEstadistica (\_ -> True) (sum . map aniosLuz)
 
 -- 7c
 nombresDeViajes :: [Viaje] -> [String]
-<<<<<<< HEAD
 nombresDeViajes = funcionEstadistica (\_ -> True) (map lugar)
-=======
-nombresDeViajes = funcionEstadistica (\_ -> True) (map lugar)
->>>>>>> 3ffc8932c854859e750d9303517ed24a6a292816
