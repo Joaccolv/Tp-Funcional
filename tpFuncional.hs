@@ -47,7 +47,7 @@ data Recuerdos = Recuerdos {nombreDelRecuerdo ::  String, lugarOrigen:: String} 
 data TipoViaje = Pasado | Futuro deriving (Eq, Show)
 
 
---transformaciones= perder recuerdos que comienzan con vocalss, aumentar 10 años, disminuir 5 años
+--transformaciones= perder recuerdos que comienzan con vocales si viajan a lejano oeste, aumentar 10 años si van hill valley
 
 
 --viajeroEjemplo :: Viajero 
@@ -92,12 +92,22 @@ viajesEntreAños :: [Viaje] -> Int -> Int -> [(String, Int)]
 viajesEntreAños viajes añoInicio añoFin = [(nombreViaje viaje, anioAlQViajan viaje) | viaje <- viajes, añoInicio <= anioAlQViajan viaje, anioAlQViajan viaje <= añoFin]
 
 --6
+listaViajes :: (a -> b) -> [a] -> [b]
+listaViajes viajes = map transformaciones viajes 
 
+transoformaciones viaje (_, lugar, _, recuerdo, anioLuz, anioAlQViajan) |lugar viaje == "lejano oeste" = filtrarRecuerdosVocal (recuerdo viaje)
+                                                                        |otherwise = "No hay ninguna transformacion aplicable a esta lista" 
+
+filtrarRecuerdosVocal :: (a -> Bool) -> [a] -> [a]
+filtrarRecuerdosVocal recuerdo= filter (\recuerdo -> not (comienzaVocal (head.recuerdo)))
+
+comienzaVocal :: String -> Bool
+comienzaVocal(x:xs) = x 'elem' "aeiou"
 --7a
 viajeCTransformaciones :: [Viaje] -> [string]
-viajeCTransformaciones viajes = [(lugar viaje, transformaciones viaje) | viaje <- viajes]  
-                            | length tranformaciones > 3 = concat lugar viajeCTranformaciones xs
-                            | otherwise = viajeCTransformaciones xs
+viajeCTransformaciones viajes = [(lugar viaje, transformaciones viaje)  | viaje <- viajes]  
+                                                                        | length tranformaciones > 3 = concat lugar viajeCTranformaciones xs
+                                                                        | otherwise = viajeCTransformaciones xs
 
 --7b
 sumaAniosLuz :: [Viaje] -> int
