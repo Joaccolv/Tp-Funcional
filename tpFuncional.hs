@@ -103,17 +103,20 @@ filtrarRecuerdosVocal recuerdo= filter (\recuerdo -> not (comienzaVocal (head.re
 
 comienzaVocal :: String -> Bool
 comienzaVocal(x:xs) = x 'elem' "aeiou"
+
+--7
+-- Función estadística
+funcionEstadistica :: (a -> Bool) -> ([b] -> c) -> [a] -> c
+funcionEstadistica condicion transformacion elementos = transformacion [x | x <- elementos, condicion x]
+
 --7a
-viajeCTransformaciones :: [Viaje] -> [string]
-viajeCTransformaciones viajes = [(lugar viaje, transformaciones viaje)  | viaje <- viajes]  
-                                                                        | length tranformaciones > 3 = concat lugar viajeCTranformaciones xs
-                                                                        | otherwise = viajeCTransformaciones xs
+viajesCMTresTransformaciones :: [Viaje] -> [String]
+viajesCMTresTransformaciones = funcionEstadistica (\viaje -> length (transformaciones viaje) > 3) (map lugar)
 
 --7b
-sumaAniosLuz :: [Viaje] -> int
-sumaAniosLuz viajes = [(aniosLuz viaje) | viaje <- viajes, ] = aniosLuz + sumaAniosLuz xs
+sumaAniosLuz :: [Viaje] -> Int
+sumaAniosLuz = funcionEstadistica (\_ -> True) (sum . map aniosLuz)
 
 --7c
-obtenerNombreViajes :: [Viaje] -> [string]
-obtenerNombreViajes [] = []
-obtenerNombreViajes (x:xs) = x (Viaje _ lugar _ _ _ _) = concat lugar obtenerNombreViajes xs
+nombresDeViajes :: [Viaje] -> [String]
+nombresDeViajes = funcionEstadistica (\_ -> True) (map lugar)
