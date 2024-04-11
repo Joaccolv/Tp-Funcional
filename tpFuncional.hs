@@ -57,14 +57,6 @@ data TipoViaje = Pasado | Futuro deriving (Eq, Show)
    -- viaje2 = Viaje Pasado "Travesia2" [] [] 0 0
 
 
---1a
-nombreViajero :: Viajero -> String
-nombreViajero (Viajero nombre _ _ _) = nombre 
--- la llamo como nombreViajero viajeroEjemplo
-
---1b
-nombreViaje :: Viaje -> String
-nombreViaje = lugar
 
 --1c
 obtenerRecuerdo :: Recuerdos -> (String, String)
@@ -76,20 +68,21 @@ recuerdosYlugares (Viajero _ _ recuerdos viajes) = (recuerdos, viajes)
 
 --3
 esViajeInteresante :: Viaje -> Bool
-esViajeInteresante (Viaje tipoViaje lugar transformaciones _ _ _ )
-                | lugar == "Lejano Oeste" = True
-                | tipoViaje == Pasado && length transformaciones > 5 = True
-                | tipoViaje == Futuro = True
-                | otherwise = False
+esViajeInteresante (Viaje Pasado _ transformaciones _ _ _ ) | length transformaciones > 5 = True
+esViajeInteresante (Viaje _ "Lejano Oeste" _ _ _ _) = True
+esViajeInteresante (Viaje Futuro _ _ _ _ _) = True
+esViajeInteresante _ = False
 
 --4
+viajesInteresantes :: [Viaje] -> [Viaje]
 viajesInteresantes = filter esViajeInteresante
 nombresYAñosViajesInteresantes :: [Viaje] -> [(String, Int)]
-nombresYAñosViajesInteresantes viajes = [(nombreViaje viaje, anioAlQViajan viaje) | viaje <- viajes]
+nombresYAñosViajesInteresantes = map (\viaje -> (lugar viaje, anioAlQViajan viaje))
 
 --5
 viajesEntreAños :: [Viaje] -> Int -> Int -> [(String, Int)]
-viajesEntreAños viajes añoInicio añoFin = [(nombreViaje viaje, anioAlQViajan viaje) | viaje <- viajes, añoInicio <= anioAlQViajan viaje, anioAlQViajan viaje <= añoFin]
+viajesEntreAños viajes añoInicio añoFin = map (\viaje -> (lugar viaje, anioAlQViajan viaje)) (filter (\viaje -> añoInicio <= anioAlQViajan viaje && anioAlQViajan viaje <= añoFin)viajes)
+
 
 --6
 
