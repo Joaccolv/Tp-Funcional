@@ -47,16 +47,20 @@ data Recuerdos = Recuerdos {nombreDelRecuerdo ::  String, lugarOrigen:: String} 
 data TipoViaje = Pasado | Futuro deriving (Eq, Show)
 
 
---transformaciones= perder recuerdos que comienzan con vocales si viajan a lejano oeste, aumentar 10 años si van hill valley
+--transformaciones= perder recuerdos que comienzan con vocales si viajan a lejano oeste, aumentar 10 años 
+--si van hill valley
 
 
---viajeroEjemplo :: Viajero 
---viajeroEjemplo = Viajero "Estefania" 20 [Recuerdos "Recuerdo1" "Lugar1", Recuerdos "Recuerdo2" "Lugar2"] [viaje1, viaje2]
- -- where
-    --viaje1 = Viaje Pasado "Travesia1" [] [] 0 0
-   -- viaje2 = Viaje Pasado "Travesia2" [] [] 0 0
+viajeroEjemplo :: Viajero 
+viajeroEjemplo = Viajero "Estefania" 20 [Recuerdos "Recuerdo1" "Lugar1", Recuerdos "Recuerdo2" "Lugar2"] [viaje1, viaje2]
+  where
+    viaje1 = Viaje Pasado "Travesia1" [] [] 0 0
+    viaje2 = Viaje Pasado "Travesia2" [] [] 0 0
 
+viajesEj = [viaje3, viaje4]
 
+viaje3 = Viaje Futuro "Brasil" [] [] 0 0
+viaje4 = Viaje Futuro "Costa" [] [] 0 0
 
 --1c
 obtenerRecuerdo :: Recuerdos -> (String, String)
@@ -85,44 +89,31 @@ viajesEntreAños viajes añoInicio añoFin = map (\viaje -> (lugar viaje, anioAl
 
 
 --6
-
-listaRecuerdosViajeroTransformado :: Viajero -> [Recuerdos]
-listaRecuerdosViajeroTransformado viajero = (obtenerRecuerdosViajero.viajeroTransformado) viajero
+aplicarTodoViajero :: [Viaje] -> Viajero -> Viajero
+aplicarTodoViajero [] viajero = viajero
+aplicarTodoViajero viajes viajero = viajeroTransformado viajes (realizarViajes viajes viajero)
 
 {------------|Sub funciones|------------}
-viajeroTransformado :: Viajero -> Viajero
-viajeroTransformado viajero = aplicarTransformaciones (listaTransformaciones viajero) viajero
 
-obtenerRecuerdosViajero :: Viajero -> [Recuerdos]
+realizarViajes :: [Viaje] -> Viajero -> Viajero
+realizarViajes viajes (Viajero n e r v) = (Viajero n e r (v ++ viajes))
 
-obtenerRecuerdosViajero (Viajero _ _ recuerdos _) = recuerdos
+aplicarTransformacion :: Viaje -> Viajero -> Viajero
+aplicarTransformacion viaje viajero@(Viajero nombre edad recuerdos viajes)
+    | lugar viaje == "lejano oeste" = Viajero nombre edad (filtrarRecuerdosVocal recuerdos) viajes
+    | tipoViaje viaje == Futuro = Viajero nombre (edad + 10) recuerdos viajes
+    | otherwise = viajero
 
-aplicarTransformaciones :: [String] -> Viajero -> Viajero
-aplicarTransformaciones [] viajero = viajero
-aplicarTransformaciones _ (Viajero _ _ [] _) = error []
-aplicarTransformaciones (x:xs) viajero@(Viajero nombre edad recuerdos viajes)
-    | x == "lejano oeste" = Viajero nombre edad (filtrarRecuerdosVocal recuerdos) viajes
-    | x == "futuro" = Viajero nombre (edad + 10) recuerdos viajes
-    | otherwise = aplicarTransformaciones xs viajero
+viajeroTransformado :: [Viaje] -> Viajero -> Viajero
+viajeroTransformado listaViajes viajeroInicial = foldl (\viajero viaje -> aplicarTransformacion viaje viajero)
+     viajeroInicial listaViajes
 
-
-listaTransformaciones :: Viajero -> [String]
-listaTransformaciones viajero = obtenerTransformaciones (viajero)
+obtenerRecuerdos :: Viaje -> Viajero -> Viajero
+obtenerRecuerdos viaje (Viajero n e r v) = (Viajero n e (r ++ recuerdo viaje) v)
 
 filtrarRecuerdosVocal :: [Recuerdos] -> [Recuerdos]
 filtrarRecuerdosVocal recuerdos = filter (\(Recuerdos nombre _) -> not(comienzaVocal nombre)) recuerdos
-
-comienzaVocal :: String -> Bool
-comienzaVocal (x:_) = x `elem` "aeiouAEIOU"
-
-
-obtenerRecuerdosDeViajes :: Viajero -> [Recuerdos]
-obtenerRecuerdosDeViajes (Viajero _ _ recuerdos viajes) = foldr (\viaje recuerdos -> recuerdo viaje ++ recuerdos) [] viajes -- deberia devolver una lista de listas con {nombreDelRecuerdo, lugarOrigen}
--- es como si le pasara x e y, pero y es una lista y voy concatenandole recuerdos 
-
-obtenerTransformaciones :: Viajero -> [String]
-obtenerTransformaciones (Viajero _ _ _ viajes) = foldr (\viaje acumulador -> transformaciones viaje ++ acumulador) [] viajes
-{-------------------------------------}
+    where comienzaVocal (x:_) = x `elem` "aeiouAEIOU"
 
 
 -- 7 Función estadística
