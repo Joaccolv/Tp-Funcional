@@ -126,17 +126,16 @@ obtenerTransformaciones (Viajero _ _ _ viajes) = foldr (\viaje acumulador -> tra
 
 
 -- 7 Función estadística
-funcionEstadistica :: (a -> Bool) -> ([a] -> b) -> [a] -> b
-funcionEstadistica condicion transformacion elementos = transformacion (filter condicion elementos)
+estadistica :: (Viaje-> Bool) -> ([Viaje] -> b) -> [Viaje] -> b
+estadistica condicion transformacion elementos = transformacion (filter condicion elementos)
 
--- 7a
-viajesCMTresTransformaciones :: [Viaje] -> [String]
-viajesCMTresTransformaciones = funcionEstadistica (\viaje -> length (transformaciones viaje) > 3) (map lugar)
+{--
+Dejo las consultas aca por las dudas, tambien van a estar puestas en el txt junto a la lista de viajes.
+Consultas:
+a- estadistica ((> 3) . length . transformaciones) (map lugar) listaDviajes
 
--- 7b
-sumaAniosLuz :: [Viaje] -> Int
-sumaAniosLuz = funcionEstadistica (\_ -> True) (sum . map aniosLuz)
+b- estadistica (\_ -> True) (sum . map aniosLuz) listaDviajes
 
--- 7c
-nombresDeViajes :: [Viaje] -> [String]
-nombresDeViajes = funcionEstadistica (\_ -> True) (map lugar)
+c- estadistica (\_ -> True) (map lugar) listaDviajes
+
+--}
