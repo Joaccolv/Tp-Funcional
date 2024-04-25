@@ -78,11 +78,9 @@ esViajeInteresante (Viaje Futuro _ _ _ _ _) = True
 esViajeInteresante _ = False
 
 --4
-viajesInteresantes :: [Viaje] -> [Viaje]
-viajesInteresantes = filter esViajeInteresante
-nombresYAñosViajesInteresantes :: [Viaje] -> [(String, Int)]
-nombresYAñosViajesInteresantes = map (\viaje -> (lugar viaje, anioAlQViajan viaje))
-
+nYAViajesInteresantes :: [Viaje] -> [(String, Int)]
+nYAViajesInteresantes viajes = map (\viaje -> (lugar viaje, anioAlQViajan viaje)) viajesInteresantes
+    where viajesInteresantes = filter esViajeInteresante viajes
 --5
 viajesEntreAños :: [Viaje] -> Int -> Int -> [(String, Int)]
 viajesEntreAños viajes añoInicio añoFin = map (\viaje -> (lugar viaje, anioAlQViajan viaje)) (filter (\viaje -> añoInicio <= anioAlQViajan viaje && anioAlQViajan viaje <= añoFin)viajes)
