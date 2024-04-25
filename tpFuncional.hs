@@ -96,7 +96,7 @@ aplicarTodoViajero viajes viajero = viajeroTransformado viajes (realizarViajes v
 {------------|Sub funciones|------------}
 
 realizarViajes :: [Viaje] -> Viajero -> Viajero
-realizarViajes viajes (Viajero n e r v) = (Viajero n e r (v ++ viajes))
+realizarViajes viajes (Viajero n e r v) = Viajero n e r (v ++ viajes)
 
 aplicarTransformacion :: Viaje -> Viajero -> Viajero
 aplicarTransformacion viaje viajero@(Viajero nombre edad recuerdos viajes)
@@ -109,11 +109,23 @@ viajeroTransformado listaViajes viajeroInicial = foldl (\viajero viaje -> aplica
      viajeroInicial listaViajes
 
 obtenerRecuerdos :: Viaje -> Viajero -> Viajero
-obtenerRecuerdos viaje (Viajero n e r v) = (Viajero n e (r ++ recuerdo viaje) v)
+obtenerRecuerdos viaje (Viajero n e r v) = Viajero n e (r ++ recuerdo viaje) v
 
 filtrarRecuerdosVocal :: [Recuerdos] -> [Recuerdos]
 filtrarRecuerdosVocal recuerdos = filter (\(Recuerdos nombre _) -> not(comienzaVocal nombre)) recuerdos
     where comienzaVocal (x:_) = x `elem` "aeiouAEIOU"
+
+filtrarRecuerdos :: Viajero -> Viajero
+filtrarRecuerdos (Viajero n e r v) = Viajero n e (filtrarRecuerdos' r v) v
+    where
+        filtrarRecuerdos' recuerdos [] = recuerdos
+        filtrarRecuerdos' recuerdos (viaje:viajesRestantes) = filtrarRecuerdos' (recuerdos ++ recuerdosFiltrados) viajesRestantes
+            where
+                recuerdosFiltrados = filter (\recuerdo -> recuerdoCoincideConTransformaciones recuerdo (transformaciones viaje)) recuerdos
+
+        recuerdoCoincideConTransformaciones :: Recuerdos -> [String] -> Bool
+        recuerdoCoincideConTransformaciones recuerdo transformacionesViaje =
+            nombreDelRecuerdo recuerdo `elem` transformacionesViaje
 
 
 -- 7 Función estadística
