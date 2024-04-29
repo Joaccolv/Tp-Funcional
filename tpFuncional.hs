@@ -57,8 +57,19 @@ viajeroEjemplo = Viajero "Estefania" 20 [Recuerdos "Recuerdo1" "Lugar1", Recuerd
     viaje1 = Viaje Pasado "Travesia1" [] [] 0 0
     viaje2 = Viaje Pasado "Travesia2" [] [] 0 0
 
+listaViajes :: [Viaje]
+listaViajes = [ Viaje Pasado "Atlántida" ["futuro", "hill valley", "pasado"] [Recuerdos "Descubrimiento de Atlántida" "Océano Atlántico"] 10000 5000
+              , Viaje Futuro "Marte" ["futuro"] [] 3000 2025
+              , Viaje Pasado "Egipto" ["pasado", "hill valley"] [Recuerdos "Construcción de las pirámides" "Desierto del Sahara"] 5000 (-5000)
+              , Viaje Futuro "Nueva York" [] [] 2000 3000
+              ]
+
+
+viajesEj :: [Viaje]
 viajesEj = [viaje3, viaje4]
 
+viaje3 :: Viaje
+viaje4 :: Viaje
 viaje3 = Viaje Futuro "Brasil" [] [] 0 0
 viaje4 = Viaje Futuro "Costa" [] [] 0 0
 
