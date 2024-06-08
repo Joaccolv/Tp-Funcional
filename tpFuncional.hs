@@ -83,7 +83,7 @@ recuerdosYlugares (Viajero _ _ recuerdos viajes) = (recuerdos, viajes)
 
 --3
 esViajeInteresante :: Viaje -> Bool
-esViajeInteresante (Viaje Pasado _ transformaciones _ _ _ ) | length transformaciones > 5 = True
+esViajeInteresante (Viaje Pasado _ recuerdo _ _ _ ) = length recuerdo > 5 = True
 esViajeInteresante (Viaje _ "Lejano Oeste" _ _ _ _) = True
 esViajeInteresante (Viaje Futuro _ _ _ _ _) = True
 esViajeInteresante _ = False
