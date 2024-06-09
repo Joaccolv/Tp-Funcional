@@ -1,9 +1,9 @@
-1.a -- nombreViajero viajeroEjemplo
+1.a -- nombre viajeroEjemplo
 
-1.b -- nombreViaje viaje1
-1.b -- nombreViaje viaje2
+1.b -- nombreLugar viaje3
+1.b -- nombreLugar viaje4
 
-1.c -- obtenerRecuerdo (head (recuerdos viajeroEjemplo))
+1.c -- obtenerRecuerdo recuerdoVaqueros
 
 2. -- recuerdosYlugares viajeroEjemplo
 
@@ -18,17 +18,19 @@
 --aplicarTodoViajero listaViajes viajeroEjemplo 
 
 7. --
-    lista de viajes que va adentro del codigo(ponerlo antes de la funcion estadistica):
-	listaDviajes :: [Viaje]
-	listaDviajes = [Viaje Pasado "Lejano Oeste" ["es herido", "le crece el pie derecho", "perdio recuerdos", "pierde un poco de pelo"] [] 0 2022,
-                 	Viaje Futuro "Futuropolis" ["se queda pelado", "se le deforma la oreja"] [] 6 2030,
-                 	Viaje Pasado "Egipto" ["es herido en la cintura", "se le mete arena al cuerpo", "pierde un recuerdo"] [] 0 2000,
-                 	Viaje Pasado "Atlantida" ["le crece mucho el pelo"] [] 0 1000,
-                 	Viaje Futuro "Marte" ["se le deforma la mano", "se le forman arrugas en la cara","pierde una zapatilla", "le crece el pie izquierdo"] [] 176 2200,
-                 	Viaje Pasado "Roma" ["pierde todos los recuerdos anteriores", "el cuerpo le vuelve a la normalidad"] [] 0 50 ]
-	Consultas:
-		a- estadistica ((> 3) . length . transformaciones) (map lugar) listaDviajes
+a- estadistica ((>3).length).transformaciones nombreLugarViaje [viajePasado,viajeFuturo,viajeAChina]
 
-		b- estadistica (\_ -> True) (sum . map aniosLuz) listaDviajes
+b- estadistica (\_ -> True) (sum . map aniosLuz) listaDviajes
 
-		c- estadistica (\_ -> True) (map lugar) listaDviajes
+c- estadistica (\viaje -> True) nombreLugarViaje [viajePasado, viajeFuturo, viajeAChina, viajeDeAmigos]   
+
+recuerdoBaile = Recuerdos "Baile del encanto bajo el oceano" "Escuela Secundaria"
+recuerdoPersecucion = Recuerdos "Persecucion con Biff" "Autopista"
+recuerdoTiburon = Recuerdos "Holograma de Jaws 19" "Plaza"
+recuerdoPartido = Recuerdos "Partido entre amigos" "Cancha de independiente"
+recuerdoChoque = Recuerdos "Choque Automovilistico" "Ruta 11"
+recuerdoHamburguesa = Recuerdos "Hamburguesa triple" "Burger King"
+recuerdoVaqueros = Recuerdos "Sombrero" "Texas"
+viajePrueba = Viaje Pasado "Lejano Oeste" [aumentarEdad] [] 2005
+viajeDeAmigos = Viaje Pasado "Tokyo" [aumentarEdad] [recuerdoBaile,recuerdoPersecucion,recuerdoTiburon, recuerdoChoque, recuerdoHamburguesa, recuerdoPartido] 1930
+viajeTexas = Viaje Pasado "Lejano Oeste" [aumentarEdad] [recuerdoVaqueros] 2018
