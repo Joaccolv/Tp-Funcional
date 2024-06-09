@@ -39,7 +39,8 @@ Nota: sólo se puede hacer la función estadística y usar la misma en forma de 
 
 data Viajero = Viajero {nombre::String , edad::Int, recuerdos::[Recuerdos], viajes::[Viaje]} deriving Show
 
-data Viaje = Viaje { tipoViaje:: TipoViaje, lugar::String, transformaciones::[String], recuerdo::[Recuerdos], 
+                                                        --aca es el data que necesito moficiar
+data Viaje = Viaje { tipoViaje:: TipoViaje, lugar::String, transformaciones::[Transformacion], recuerdo::[Recuerdos], 
                         aniosLuz::Int, anioAlQViajan::Int } deriving Show
 
 data Recuerdos = Recuerdos {nombreDelRecuerdo ::  String, lugarOrigen:: String} deriving Show
@@ -83,7 +84,7 @@ recuerdosYlugares (Viajero _ _ recuerdos viajes) = (recuerdos, viajes)
 
 --3
 esViajeInteresante :: Viaje -> Bool
-esViajeInteresante (Viaje Pasado _ recuerdo _ _ _ ) = length recuerdo > 5 = True
+esViajeInteresante (Viaje Pasado _ recuerdo _ _ _ ) = length recuerdo > 5
 esViajeInteresante (Viaje _ "Lejano Oeste" _ _ _ _) = True
 esViajeInteresante (Viaje Futuro _ _ _ _ _) = True
 esViajeInteresante _ = False
@@ -93,49 +94,29 @@ nYAViajesInteresantes :: [Viaje] -> [(String, Int)]
 nYAViajesInteresantes viajes = map (\viaje -> (lugar viaje, anioAlQViajan viaje)) viajesInteresantes
     where viajesInteresantes = filter esViajeInteresante viajes
 --5
-viajesEntreAños :: [Viaje] -> Int -> Int -> [(String, Int)]
-viajesEntreAños viajes añoInicio añoFin = map (\viaje -> (lugar viaje, anioAlQViajan viaje)) (filter (\viaje -> añoInicio <= anioAlQViajan viaje && anioAlQViajan viaje <= añoFin)viajes)
 
+viajesEntreAnios :: [Viaje] -> Int -> Int -> [(String, Int)]
+viajesEntreAnios viajes anioInicio anioFin = nYAViajesInteresantes (filter (\viaje -> anioAlQViajan viaje >= anioInicio && anioAlQViajan viaje <= anioFin) viajes)
 
 --6
-aplicarTodoViajero :: [Viaje] -> Viajero -> Viajero
-aplicarTodoViajero [] viajero = viajero
-aplicarTodoViajero viajes viajero = viajeroTransformado viajes (realizarViajes viajes viajero)
 
-{------------|Sub funciones|------------}
 
-realizarViajes :: [Viaje] -> Viajero -> Viajero
-realizarViajes viajes (Viajero n e r v) = Viajero n e r (v ++ viajes)
+viajar :: Foldable t => Viajero -> t Viaje -> Viajero
+viajar viajero viajes = foldl (\ acc x -> hacerViaje acc x)  viajero  viajes
 
-aplicarTransformacion :: Viaje -> Viajero -> Viajero
-aplicarTransformacion viaje viajero@(Viajero nombre edad recuerdos viajes)
-    | lugar viaje == "lejano oeste" = Viajero nombre edad (filtrarRecuerdosVocal recuerdos) viajes
-    | tipoViaje viaje == Futuro = Viajero nombre (edad + 10) recuerdos viajes
-    | otherwise = viajero
 
-viajeroTransformado :: [Viaje] -> Viajero -> Viajero
-viajeroTransformado listaViajes viajeroInicial = foldl (\viajero viaje -> aplicarTransformacion viaje viajero)
-     viajeroInicial listaViajes
+hacerViaje :: Viajero -> Viaje -> Viajero
+hacerViaje (Viajero nombre edad recuerdosViajero viajesActuales) viaje = foldl (\ acc x -> x acc)  (Viajero nombre edad  (recuerdosViajero ++ recuerdosLista viaje ) (viajesActuales ++ [viaje])) (transformacionesLista viaje)
 
-obtenerRecuerdos :: Viaje -> Viajero -> Viajero
-obtenerRecuerdos viaje (Viajero n e r v) = Viajero n e (r ++ recuerdo viaje) v
 
-filtrarRecuerdosVocal :: [Recuerdos] -> [Recuerdos]
-filtrarRecuerdosVocal recuerdos = filter (\(Recuerdos nombre _) -> not(comienzaVocal nombre)) recuerdos
-    where comienzaVocal (x:_) = x `elem` "aeiouAEIOU"
+-- la funcion en general lo que hace es recupera una lista con funciones y se lo pasa a hacerViaje para que para que vaya modificando al viajero con las transformaciones 
+transformacionesLista :: Viaje -> [Transformacion]
+transformacionesLista (Viaje tipoViaje _ listaTransformaciones _ _ _) = listaTransformaciones
 
-filtrarRecuerdos :: Viajero -> Viajero
-filtrarRecuerdos (Viajero n e r v) = Viajero n e (filtrarRecuerdos' r v) v
-    where
-        filtrarRecuerdos' recuerdos [] = recuerdos
-        filtrarRecuerdos' recuerdos (viaje:viajesRestantes) = filtrarRecuerdos' (recuerdos ++ recuerdosFiltrados) viajesRestantes
-            where
-                recuerdosFiltrados = filter (\recuerdo -> recuerdoCoincideConTransformaciones recuerdo (transformaciones viaje)) recuerdos
 
-        recuerdoCoincideConTransformaciones :: Recuerdos -> [String] -> Bool
-        recuerdoCoincideConTransformaciones recuerdo transformacionesViaje =
-            nombreDelRecuerdo recuerdo `elem` transformacionesViaje
-
+recuerdosLista :: Viaje -> [Recuerdos]
+recuerdosLista (Viaje Pasado _ _ recuerdos _ _) = recuerdos 
+recuerdosLista (Viaje Futuro _ _ _ _ _) = []
 
 -- 7 Función estadística
 estadistica :: (Viaje-> Bool) -> ([Viaje] -> b) -> [Viaje] -> b
@@ -149,3 +130,6 @@ b- estadistica (\_ -> True) (sum . map aniosLuz) listaDviajes
 
 c- estadistica (\_ -> True) (map lugar) listaDviajes   
 -}
+
+
+-- AVISO: solamente modifique los puntos 3 y 6, las otras correciones no llegue a hacerlas.
