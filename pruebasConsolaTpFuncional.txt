@@ -1,9 +1,9 @@
-1.a -- nombreViajero viajeroEjemplo
+1.a -- nombre viajeroEjemplo
 
-1.b -- nombreViaje viaje1
-1.b -- nombreViaje viaje2
+1.b -- nombreLugar viaje3
+1.b -- nombreLugar viaje4
 
-1.c -- obtenerRecuerdo (head (recuerdos viajeroEjemplo))
+1.c -- obtenerRecuerdo recuerdoVaqueros
 
 2. -- recuerdosYlugares viajeroEjemplo
 
