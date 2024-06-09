@@ -40,7 +40,7 @@ Nota: sólo se puede hacer la función estadística y usar la misma en forma de 
 data Viajero = Viajero {nombre::String , edad::Int, recuerdos::[Recuerdos], viajes::[Viaje]} deriving Show
 
                                                         --aca es el data que necesito moficiar
-data Viaje = Viaje { tipoViaje:: TipoViaje, lugar::String, transformaciones::[Viajero -> Viajero], recuerdo::[Recuerdos], 
+data Viaje = Viaje { tipoViaje:: TipoViaje, nombreLugar::String, transformaciones::[Viajero -> Viajero], recuerdo::[Recuerdos], 
                         aniosLuz::Int, anioAlQViajan::Int }
 
 data Recuerdos = Recuerdos {nombreDelRecuerdo ::  String, lugarOrigen:: String} deriving Show
@@ -88,7 +88,7 @@ esViajeInteresante _ = False
 
 --4
 nYAViajesInteresantes :: [Viaje] -> [(String, Int)]
-nYAViajesInteresantes viajes = map (\viaje -> (lugar viaje, anioAlQViajan viaje)) viajesInteresantes
+nYAViajesInteresantes viajes = map (\viaje -> (nombreLugar viaje, anioAlQViajan viaje)) viajesInteresantes
     where viajesInteresantes = filter esViajeInteresante viajes
 --5
 
