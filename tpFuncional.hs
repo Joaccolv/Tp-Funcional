@@ -40,31 +40,28 @@ Nota: sólo se puede hacer la función estadística y usar la misma en forma de 
 data Viajero = Viajero {nombre::String , edad::Int, recuerdos::[Recuerdos], viajes::[Viaje]} deriving Show
 
                                                         --aca es el data que necesito moficiar
-data Viaje = Viaje { tipoViaje:: TipoViaje, lugar::String, transformaciones::[Transformacion], recuerdo::[Recuerdos], 
-                        aniosLuz::Int, anioAlQViajan::Int } deriving Show
+data Viaje = Viaje { tipoViaje:: TipoViaje, lugar::String, transformaciones::[Viajero -> Viajero], recuerdo::[Recuerdos], 
+                        aniosLuz::Int, anioAlQViajan::Int }
 
 data Recuerdos = Recuerdos {nombreDelRecuerdo ::  String, lugarOrigen:: String} deriving Show
 
 data TipoViaje = Pasado | Futuro deriving (Eq, Show)
 
-
---transformaciones= perder recuerdos que comienzan con vocales si viajan a lejano oeste, aumentar 10 años 
---si van hill valley
-
+instance Show Viaje where
+    show (Viaje tipoViaje lugar _ recuerdos aniosLuz anioAlQViajan) = 
+        "Viaje { tipoViaje = " ++ show tipoViaje ++
+        ", lugar = " ++ show lugar ++
+        ", transformaciones = <funciones>" ++
+        ", recuerdos = " ++ show recuerdos ++
+        ", aniosLuz = " ++ show aniosLuz ++
+        ", anioAlQViajan = " ++ show anioAlQViajan ++
+        " }"
 
 viajeroEjemplo :: Viajero 
 viajeroEjemplo = Viajero "Estefania" 20 [Recuerdos "Recuerdo1" "Lugar1", Recuerdos "Recuerdo2" "Lugar2"] [viaje1, viaje2]
   where
     viaje1 = Viaje Pasado "Travesia1" [] [] 0 0
     viaje2 = Viaje Pasado "Travesia2" [] [] 0 0
-
-listaViajes :: [Viaje]
-listaViajes = [ Viaje Pasado "Atlántida" ["futuro", "hill valley", "pasado"] [Recuerdos "Descubrimiento de Atlántida" "Océano Atlántico"] 10000 5000
-              , Viaje Futuro "Marte" ["futuro"] [] 3000 2025
-              , Viaje Pasado "Egipto" ["pasado", "hill valley"] [Recuerdos "Construcción de las pirámides" "Desierto del Sahara"] 5000 (-5000)
-              , Viaje Futuro "Nueva York" [] [] 2000 3000
-              ]
-
 
 viajesEj :: [Viaje]
 viajesEj = [viaje3, viaje4]
@@ -108,28 +105,42 @@ viajar viajero viajes = foldl (\ acc x -> hacerViaje acc x)  viajero  viajes
 hacerViaje :: Viajero -> Viaje -> Viajero
 hacerViaje (Viajero nombre edad recuerdosViajero viajesActuales) viaje = foldl (\ acc x -> x acc)  (Viajero nombre edad  (recuerdosViajero ++ recuerdosLista viaje ) (viajesActuales ++ [viaje])) (transformacionesLista viaje)
 
-
--- la funcion en general lo que hace es recupera una lista con funciones y se lo pasa a hacerViaje para que para que vaya modificando al viajero con las transformaciones 
-transformacionesLista :: Viaje -> [Transformacion]
+transformacionesLista :: Viaje -> [Viajero -> Viajero]
 transformacionesLista (Viaje tipoViaje _ listaTransformaciones _ _ _) = listaTransformaciones
-
 
 recuerdosLista :: Viaje -> [Recuerdos]
 recuerdosLista (Viaje Pasado _ _ recuerdos _ _) = recuerdos 
 recuerdosLista (Viaje Futuro _ _ _ _ _) = []
 
+--ejemplos transformaciones
+aumentarEdad :: Viajero -> Viajero
+aumentarEdad (Viajero nombre edad recuerdos viajes) = Viajero nombre (edad + 1) recuerdos viajes
+disminuirEdad :: Viajero -> Viajero
+disminuirEdad (Viajero nombre edad recuerdos viajes) = Viajero nombre (edad - 1) recuerdos viajes
+
 -- 7 Función estadística
-estadistica :: (Viaje-> Bool) -> ([Viaje] -> b) -> [Viaje] -> b
-estadistica condicion transformacion elementos = transformacion (filter condicion elementos)
+
+estadistica :: (a -> Bool) -> (a -> b) -> [a] -> [b]
+estadistica condicion transformacion elementos = map transformacion (filter condicion elementos)
 
 {- Dejo las consultas aca por las dudas, igual van a estar en el txt junto a la lista de viajes
 Consultas:
-a- estadistica ((> 3) . length . transformaciones) (map lugar) listaDviajes
+a- estadistica ((>3).length).transformaciones nombreLugarViaje [viajePasado,viajeFuturo,viajeAChina]
 
 b- estadistica (\_ -> True) (sum . map aniosLuz) listaDviajes
 
-c- estadistica (\_ -> True) (map lugar) listaDviajes   
+c- estadistica (\viaje -> True) nombreLugarViaje [viajePasado, viajeFuturo, viajeAChina, viajeDeAmigos]   
 -}
 
 
--- AVISO: solamente modifique los puntos 3 y 6, las otras correciones no llegue a hacerlas.
+
+recuerdoBaile = Recuerdos "Baile del encanto bajo el oceano" "Escuela Secundaria"
+recuerdoPersecucion = Recuerdos "Persecucion con Biff" "Autopista"
+recuerdoTiburon = Recuerdos "Holograma de Jaws 19" "Plaza"
+recuerdoPartido = Recuerdos "Partido entre amigos" "Cancha de independiente"
+recuerdoChoque = Recuerdos "Choque Automovilistico" "Ruta 11"
+recuerdoHamburguesa = Recuerdos "Hamburguesa triple" "Burger King"
+recuerdoVaqueros = Recuerdos "Sombrero" "Texas"
+viajePrueba = Viaje Pasado "Lejano Oeste" [aumentarEdad] [] 2005
+viajeDeAmigos = Viaje Pasado "Tokyo" [aumentarEdad] [recuerdoBaile,recuerdoPersecucion,recuerdoTiburon, recuerdoChoque, recuerdoHamburguesa, recuerdoPartido] 1930
+viajeTexas = Viaje Pasado "Lejano Oeste" [aumentarEdad] [recuerdoVaqueros] 2018
