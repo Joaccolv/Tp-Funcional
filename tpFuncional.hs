@@ -103,6 +103,13 @@ aumentarEdad (Viajero nombre edad recuerdos viajes) = Viajero nombre (edad + 1) 
 disminuirEdad :: Viajero -> Viajero
 disminuirEdad (Viajero nombre edad recuerdos viajes) = Viajero nombre (edad - 1) recuerdos viajes
 
+aumentarEdadx2 :: Viajero -> Viajero
+aumentarEdadx2 (Viajero nombre edad recuerdos viajes) = Viajero nombre (edad + 2) recuerdos viajes
+
+disminuirEdadx2 :: Viajero -> Viajero
+disminuirEdadx2 (Viajero nombre edad recuerdos viajes) = Viajero nombre (edad - 2) recuerdos viajes
+--cree dos mas para probar el punto 7a
+
 -- 7 Función estadística
 
 
@@ -110,7 +117,7 @@ estadistica :: (a -> Bool) -> (a -> b) -> [a] -> [b]
 estadistica condicion transformacion lista = map transformacion (filter condicion lista)
 {- Dejo las consultas aca por las dudas, igual van a estar en el txt junto a la lista de viajes
 Consultas:
-a- estadistica ((>3).length).transformaciones nombreLugarV [viajePasado,viajeFuturo,viajeAChina]
+a- estadistica (\viaje -> length (transformaciones viaje) > 3) nombreLugarV [viajePasado, viajeFuturo, viajeConTresTransformaciones] 
 
 b- sum (estadistica esViajeFuturo (\(Futuro _ _ _ aniosLuz) -> aniosLuz) [viajePasado, viajeFuturo, viajeAChina, viajePrueba])
 
@@ -162,3 +169,5 @@ viajeTexas :: Viaje
 viajeTexas = Pasado "Lejano Oeste" [aumentarEdad] [recuerdoVaqueros] 2018
 viajeTurista :: Viaje
 viajeTurista = Futuro "Caminito" [disminuirEdad] 346 2040
+viajeConTresTransformaciones :: Viaje
+viajeConTresTransformaciones = Pasado "Mi Casa" [aumentarEdad, disminuirEdad, aumentarEdadx2, disminuirEdadx2] [] 450
