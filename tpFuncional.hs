@@ -1,4 +1,4 @@
-{-\Desde tiempos inmemoriales los viajes en el tiempo han seducido a muchas personas.
+{-Desde tiempos inmemoriales los viajes en el tiempo han seducido a muchas personas.
 ¡Hoy los vamos a programar!
 Como cualquier viaje, tenemos a la persona que lo realiza y de ella se conoce:
     *su nombre,
@@ -37,110 +37,94 @@ Nota: sólo se puede hacer la función estadística y usar la misma en forma de 
 -- esto es una prueba 
 -- probando ando
 
-data Viajero = Viajero {nombre::String , edad::Int, recuerdos::[Recuerdos], viajes::[Viaje]} deriving Show
+data Viajero = Viajero String Int [Recuerdo] [Viaje]  
+data Viaje = Pasado String [Viajero -> Viajero] [Recuerdo] Int | Futuro String [Viajero -> Viajero] Int Int 
+data Recuerdo = Recuerdo String String deriving (Show,Eq)
 
-                                                        --aca es el data que necesito moficiar
-data Viaje = Viaje { tipoViaje:: TipoViaje, nombreLugar::String, transformaciones::[Viajero -> Viajero], recuerdo::[Recuerdos], 
-                        aniosLuz::Int, anioAlQViajan::Int }
+instance Show Viaje where 
+    show (Pasado nombre lugares transformaciones anio) = "Viaje pasado {nombre = " ++ nombre ++ ", lugares = " ++ "Hola" ++ ", transformaciones = <funciones> , anio = " ++ show anio ++"}" 
+    show (Futuro nombre lugares aniosluz anio) = "Viaje futuro {nombre = " ++ nombre ++ ", lugares = " ++ "Hola" ++ ", aniosluz = " ++ show aniosluz ++ ", anio = " ++ show anio ++ "}"
 
-data Recuerdos = Recuerdos {nombreDelRecuerdo ::  String, lugarOrigen:: String} deriving Show
-
-data TipoViaje = Pasado | Futuro deriving (Eq, Show)
-
-instance Show Viaje where
-    show (Viaje tipoViaje lugar _ recuerdos aniosLuz anioAlQViajan) = 
-        "Viaje { tipoViaje = " ++ show tipoViaje ++
-        ", lugar = " ++ show lugar ++
-        ", transformaciones = <funciones>" ++
-        ", recuerdos = " ++ show recuerdos ++
-        ", aniosLuz = " ++ show aniosLuz ++
-        ", anioAlQViajan = " ++ show anioAlQViajan ++
-        " }"
-
-viajeroEjemplo :: Viajero 
-viajeroEjemplo = Viajero "Estefania" 20 [Recuerdos "Recuerdo1" "Lugar1", Recuerdos "Recuerdo2" "Lugar2"] [viaje1, viaje2]
-  where
-    viaje1 = Viaje Pasado "Travesia1" [] [] 0 0
-    viaje2 = Viaje Pasado "Travesia2" [] [] 0 0
-
-viajesEj :: [Viaje]
-viajesEj = [viaje3, viaje4]
-
-viaje3 :: Viaje
-viaje4 :: Viaje
-viaje3 = Viaje Futuro "Brasil" [] [] 0 0
-viaje4 = Viaje Futuro "Costa" [] [] 0 0
+instance Show Viajero where show (Viajero nombre edad recuerdos viajes) = "Persona {nombre = " ++ nombre ++ ", edad = " ++ show edad ++ ", recuerdos = " ++ show recuerdos ++ ", viajes = " ++ show viajes ++ "}"
 
 --1c
-obtenerRecuerdo :: Recuerdos -> (String, String)
-obtenerRecuerdo (Recuerdos nombreDelRecuerdo lugarOrigen) = (nombreDelRecuerdo, lugarOrigen)
+nombreViajero(Viajero nombre _ _ _) = nombre
+
+nombreLugarV(Pasado nombre _ _ _) = nombre
+nombreLugarV(Futuro nombre _ _ _) = nombre
+obtenerRecuerdo (Recuerdo nombreDelRecuerdo lugarOrigen) = (nombreDelRecuerdo, lugarOrigen)
 
 --2
-recuerdosYlugares :: Viajero -> ([Recuerdos], [Viaje])
-recuerdosYlugares (Viajero _ _ recuerdos viajes) = (recuerdos, viajes) 
+
+recuerdosYLugares (Viajero _ _ recuerdos viajes) = (recuerdos, viajes) 
 
 --3
-esViajeInteresante :: Viaje -> Bool
-esViajeInteresante (Viaje Pasado _ recuerdo _ _ _ ) = length recuerdo > 5
-esViajeInteresante (Viaje _ "Lejano Oeste" _ _ _ _) = True
-esViajeInteresante (Viaje Futuro _ _ _ _ _) = True
+
+esViajeInteresante (Pasado "Lejano Oeste" _ _ _) = True 
+esViajeInteresante (Pasado _ _ listaRecuerdos _) = length listaRecuerdos > 5                                                                                  
+esViajeInteresante (Futuro _ _ _ _) = True
 esViajeInteresante _ = False
 
 --4
-nYAViajesInteresantes :: [Viaje] -> [(String, Int)]
-nYAViajesInteresantes viajes = map (\viaje -> (nombreLugar viaje, anioAlQViajan viaje)) viajesInteresantes
-    where viajesInteresantes = filter esViajeInteresante viajes
+
+nYAQueViaje (Pasado lugarviaje _ _ anio) = (lugarviaje,anio)
+nYAQueViaje (Futuro lugarviaje _ _ anio) = (lugarviaje,anio)
+nYAQueViajanDeViajesINteresantes viajes = map nYAQueViaje (filter esViajeInteresante viajes)
 --5
-
-viajesEntreAnios :: [Viaje] -> Int -> Int -> [(String, Int)]
-viajesEntreAnios viajes anioInicio anioFin = nYAViajesInteresantes (filter (\viaje -> anioAlQViajan viaje >= anioInicio && anioAlQViajan viaje <= anioFin) viajes)
-
+viajesEntreAnios listaViajes anioInicio anioFin = map nYAQueViaje (filter (\viaje -> snd (nYAQueViaje viaje) >= anioInicio && snd (nYAQueViaje viaje) <= anioFin) listaViajes)
 --6
-
-
-viajar :: Foldable t => Viajero -> t Viaje -> Viajero
 viajar viajero viajes = foldl (\ acc x -> hacerViaje acc x)  viajero  viajes
 
+hacerViaje (Viajero nombre edad recuerdosViajero viajesActuales) viaje = foldl (\ acc x -> x acc)  (Viajero nombre edad  ( recuerdosViajero ++ recuerdos viaje ) (viajesActuales ++ [viaje])) (transformaciones viaje)
 
-hacerViaje :: Viajero -> Viaje -> Viajero
-hacerViaje (Viajero nombre edad recuerdosViajero viajesActuales) viaje = foldl (\ acc x -> x acc)  (Viajero nombre edad  (recuerdosViajero ++ recuerdosLista viaje ) (viajesActuales ++ [viaje])) (transformacionesLista viaje)
+transformaciones (Pasado _  listaTransformaciones _ _ ) = listaTransformaciones
+transformaciones (Futuro _ listaTransformaciones _ _) = listaTransformaciones
 
-transformacionesLista :: Viaje -> [Viajero -> Viajero]
-transformacionesLista (Viaje tipoViaje _ listaTransformaciones _ _ _) = listaTransformaciones
+recuerdos  (Pasado _ _ listaRecuerdos _ ) = listaRecuerdos 
+recuerdos (Futuro _ _ _ _ ) = [] 
 
-recuerdosLista :: Viaje -> [Recuerdos]
-recuerdosLista (Viaje Pasado _ _ recuerdos _ _) = recuerdos 
-recuerdosLista (Viaje Futuro _ _ _ _ _) = []
 
 --ejemplos transformaciones
-aumentarEdad :: Viajero -> Viajero
+
 aumentarEdad (Viajero nombre edad recuerdos viajes) = Viajero nombre (edad + 1) recuerdos viajes
-disminuirEdad :: Viajero -> Viajero
+
 disminuirEdad (Viajero nombre edad recuerdos viajes) = Viajero nombre (edad - 1) recuerdos viajes
 
 -- 7 Función estadística
 
-estadistica :: (a -> Bool) -> (a -> b) -> [a] -> [b]
-estadistica condicion transformacion elementos = map transformacion (filter condicion elementos)
 
+estadistica condicion transformacion lista = map transformacion (filter condicion lista)
 {- Dejo las consultas aca por las dudas, igual van a estar en el txt junto a la lista de viajes
 Consultas:
-a- estadistica ((>3).length).transformaciones nombreLugarViaje [viajePasado,viajeFuturo,viajeAChina]
+a- estadistica ((>3).length).transformaciones nombreLugarV [viajePasado,viajeFuturo,viajeAChina]
 
-b- estadistica (\_ -> True) (sum . map aniosLuz) listaDviajes
+b- sum (estadistica esViajeFuturo (\(Futuro _ _ _ aniosLuz) -> aniosLuz) [viajePasado, viajeFuturo, viajeAChina, viajePrueba])
 
-c- estadistica (\viaje -> True) nombreLugarViaje [viajePasado, viajeFuturo, viajeAChina, viajeDeAmigos]   
+c- estadistica (\viaje -> True) nombreLugarV [viajePasado, viajeFuturo, viajeAChina, viajeDeAmigos]
+  
 -}
 
+esViajeFuturo (Pasado _ _ _ _) = False
+esViajeFuturo (Futuro _ _ _ _) = True
 
+viajero1 = Viajero "Pedro" 35 [] []
+viajero2 = Viajero "Carlos" 19 [] []
+juan = Viajero "Juan" 23 [] []
+marty = Viajero "Marty McFly" 17 [recuerdoBaile,recuerdoPersecucion,recuerdoTiburon] [viajePasado,viajeFuturo,viajeAChina]
+doc = Viajero "Dr Emmet Brown" 65 [] [viajePasado,viajeFuturo,viajeAChina]
 
-recuerdoBaile = Recuerdos "Baile del encanto bajo el oceano" "Escuela Secundaria"
-recuerdoPersecucion = Recuerdos "Persecucion con Biff" "Autopista"
-recuerdoTiburon = Recuerdos "Holograma de Jaws 19" "Plaza"
-recuerdoPartido = Recuerdos "Partido entre amigos" "Cancha de independiente"
-recuerdoChoque = Recuerdos "Choque Automovilistico" "Ruta 11"
-recuerdoHamburguesa = Recuerdos "Hamburguesa triple" "Burger King"
-recuerdoVaqueros = Recuerdos "Sombrero" "Texas"
-viajePrueba = Viaje Pasado "Lejano Oeste" [aumentarEdad] [] 2005
-viajeDeAmigos = Viaje Pasado "Tokyo" [aumentarEdad] [recuerdoBaile,recuerdoPersecucion,recuerdoTiburon, recuerdoChoque, recuerdoHamburguesa, recuerdoPartido] 1930
-viajeTexas = Viaje Pasado "Lejano Oeste" [aumentarEdad] [recuerdoVaqueros] 2018
+recuerdoBaile = Recuerdo "Baile del encanto bajo el oceano" "Escuela Secundaria"
+recuerdoPersecucion = Recuerdo "Persecucion con Biff" "Autopista"
+recuerdoTiburon = Recuerdo "Holograma de Jaws 19" "Plaza"
+recuerdoPartido = Recuerdo "Partido entre amigos" "Cancha de independiente"
+recuerdoChoque = Recuerdo "Choque Automovilistico" "Ruta 11"
+recuerdoHamburguesa = Recuerdo "Hamburguesa triple" "Burger King"
+recuerdoVaqueros = Recuerdo "Sombrero" "Texas"
+
+viajePasado = Pasado "Marte" [] [] 1950
+viajeFuturo = Futuro "Luna" [] 300 2010
+viajeAChina = Futuro "China" [] 100 1985
+viajePrueba = Pasado "Lejano Oeste" [aumentarEdad] [] 2005
+viajeDeAmigos = Pasado "Tokyo" [aumentarEdad] [recuerdoBaile,recuerdoPersecucion,recuerdoTiburon, recuerdoChoque, recuerdoHamburguesa, recuerdoPartido] 1930
+viajeTexas = Pasado "Lejano Oeste" [aumentarEdad] [recuerdoVaqueros] 2018
+viajeTurista = Futuro "Caminito" [disminuirEdad] 346 2040
