@@ -17,7 +17,7 @@
 
 --viajar marty [viajeTexas,viajePrueba]
 7. --
-a- estadistica ((>3).length).transformaciones nombreLugarV [viajePasado,viajeFuturo,viajeAChina]
+a- estadistica (\viaje -> length (transformaciones viaje) > 3) nombreLugarV [viajePasado, viajeFuturo, viajeConTresTransformaciones]
 
 b- sum (estadistica esViajeFuturo (\(Futuro _ _ _ aniosLuz) -> aniosLuz) [viajePasado, viajeFuturo, viajeAChina, viajePrueba])
 
