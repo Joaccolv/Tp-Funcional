@@ -1,36 +1,24 @@
-1.a -- nombre viajeroEjemplo
+1.a -- nombreViajero marty
 
-1.b -- nombreLugar viaje3
-1.b -- nombreLugar viaje4
+1.b -- nombreLugarV viajeTexas
+1.b -- nombreLugarV viajeTurista
 
 1.c -- obtenerRecuerdo recuerdoVaqueros
 
-2. -- recuerdosYlugares viajeroEjemplo
+2. -- recuerdosYLugares marty
 
-3. -- esViajeInteresante viaje1
+3. -- esViajeInteresante viajeTexas
 
-4. -- nombresYAñosViajesInteresantes [viaje1, viaje2]
+4. -- nYAQueViajanDeViajesINteresantes [viajeTexas, viajeTutrista]
 
-5. -- viajesEntreAños [viaje1, viaje2] 2000 2020
+5. -- viajesEntreAnios [viajeTexas, viajeTurista] 2000 2020
 
 6. --
 
---aplicarTodoViajero listaViajes viajeroEjemplo 
-
+--viajar marty [viajeTexas,viajePrueba]
 7. --
-a- estadistica ((>3).length).transformaciones nombreLugarViaje [viajePasado,viajeFuturo,viajeAChina]
+a- estadistica ((>3).length).transformaciones nombreLugarV [viajePasado,viajeFuturo,viajeAChina]
 
-b- estadistica (\_ -> True) (sum . map aniosLuz) listaDviajes
+b- sum (estadistica esViajeFuturo (\(Futuro _ _ _ aniosLuz) -> aniosLuz) [viajePasado, viajeFuturo, viajeAChina, viajePrueba])
 
 c- estadistica (\viaje -> True) nombreLugarViaje [viajePasado, viajeFuturo, viajeAChina, viajeDeAmigos]   
-
-recuerdoBaile = Recuerdos "Baile del encanto bajo el oceano" "Escuela Secundaria"
-recuerdoPersecucion = Recuerdos "Persecucion con Biff" "Autopista"
-recuerdoTiburon = Recuerdos "Holograma de Jaws 19" "Plaza"
-recuerdoPartido = Recuerdos "Partido entre amigos" "Cancha de independiente"
-recuerdoChoque = Recuerdos "Choque Automovilistico" "Ruta 11"
-recuerdoHamburguesa = Recuerdos "Hamburguesa triple" "Burger King"
-recuerdoVaqueros = Recuerdos "Sombrero" "Texas"
-viajePrueba = Viaje Pasado "Lejano Oeste" [aumentarEdad] [] 2005
-viajeDeAmigos = Viaje Pasado "Tokyo" [aumentarEdad] [recuerdoBaile,recuerdoPersecucion,recuerdoTiburon, recuerdoChoque, recuerdoHamburguesa, recuerdoPartido] 1930
-viajeTexas = Viaje Pasado "Lejano Oeste" [aumentarEdad] [recuerdoVaqueros] 2018
