@@ -9,16 +9,15 @@
 
 3. -- esViajeInteresante viajeTexas
 
-4. -- nYAQueViajanDeViajesINteresantes [viajeTexas, viajeTutrista]
+4. -- nYAQueViajanDeViajesINteresantes [viajeTexas, viajeFuturo]
 
 5. -- viajesEntreAnios [viajeTexas, viajeTurista] 2000 2020
 
-6. --
+6. -- viajar marty [viajeTexas,viajePrueba]
 
---viajar marty [viajeTexas,viajePrueba]
 7. --
 a- estadistica (\viaje -> length (transformaciones viaje) > 3) nombreLugarV [viajePasado, viajeFuturo, viajeConTresTransformaciones]
 
 b- sum (estadistica esViajeFuturo (\(Futuro _ _ _ aniosLuz) -> aniosLuz) [viajePasado, viajeFuturo, viajeAChina, viajePrueba])
 
-c- estadistica (\viaje -> True) nombreLugarViaje [viajePasado, viajeFuturo, viajeAChina, viajeDeAmigos]   
+c- estadistica (\viaje -> True) nombreLugarV [viajePasado, viajeFuturo, viajeAChina]   
